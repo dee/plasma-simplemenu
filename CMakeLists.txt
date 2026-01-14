@@ -28,8 +28,8 @@ find_package(Plasma REQUIRED)
 find_package(PlasmaQuick REQUIRED)
 
 add_library(simplemenu MODULE
-#    plugin/simplemenu.cpp
-#    plugin/simplemenu.h
+    package/plugin/simplemenu.cpp
+    package/plugin/simplemenu.h
     package/plugin/plugin.cpp
 )
 
