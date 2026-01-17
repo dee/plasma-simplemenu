@@ -31,6 +31,7 @@ add_library(simplemenu MODULE
     package/plugin/simplemenu.cpp
     package/plugin/simplemenu.h
     package/plugin/plugin.cpp
+    package/contents/ui/main.qml
 )
 
 target_link_libraries(simplemenu
