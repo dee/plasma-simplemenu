@@ -30,6 +30,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
+    void loadApplications();
+
 private:
     QList<AppItem> m_filteredApps, m_apps;
 };
