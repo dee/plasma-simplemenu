@@ -32,6 +32,7 @@ add_library(simplemenu MODULE
     package/plugin/simplemenu.h
     package/plugin/plugin.cpp
     package/contents/ui/main.qml
+    package/plugin/qmldir
 )
 
 target_link_libraries(simplemenu
@@ -44,9 +45,7 @@ target_link_libraries(simplemenu
     Plasma::PlasmaQuick
 )
 
-# Установка
 install(TARGETS simplemenu DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/plasma/private/simplemenu)
-install(FILES plugin/qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/plasma/private/simplemenu)
+install(FILES package/plugin/qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/plasma/private/simplemenu)
 
-# Установка плазмоида
 plasma_install_package(package org.kde.plasma.simplemenu)
