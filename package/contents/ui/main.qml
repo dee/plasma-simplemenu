@@ -7,6 +7,8 @@ import org.kde.plasma.core as Core
 import org.kde.plasma.components as PC
 import org.kde.kirigami as Kirigami
 
+import org.kde.plasma.simplemenu
+
 PlasmoidItem {
     id: root
 
