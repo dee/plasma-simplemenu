@@ -1,30 +1,36 @@
-#include <KService>
-#include <QDebug>
-
 #include "simplemenu.h"
 
-SimpleMenu::SimpleMenu(QObject* parent)
-    : QAbstractListModel(parent),
-    m_filteredApps(),
-    m_apps()
+#include <QStringLiteral>
+
+QString SimpleMenu::message() const
 {
-    loadApplications();
+    return QStringLiteral("Hello!");
 }
 
-HelloWorld* SimpleMenu::create(QQmlEngine*, QJSEngine*)
+SimpleMenu *SimpleMenu::create(QQmlEngine *, QJSEngine *)
 {
     static SimpleMenu instance;
     QQmlEngine::setObjectOwnership(&instance, QQmlEngine::CppOwnership);
     return &instance;
 }
 
-int SimpleMenu::rowCount(const QModelIndex &parent) const
+SimpleMenu::SimpleMenu()
+    : QObject(nullptr)
+    ,m_model(nullptr)
+{}
+
+SimpleMenuListModel::SimpleMenuListModel(QObject *parent)
+{
+
+}
+
+int SimpleMenuListModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return m_filteredApps.size();
 }
 
-QVariant SimpleMenu::data(const QModelIndex &index, int role) const
+QVariant SimpleMenuListModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.row() >= m_filteredApps.size())
     {
@@ -48,7 +54,7 @@ QVariant SimpleMenu::data(const QModelIndex &index, int role) const
     }
 }
 
-QHash<int, QByteArray> SimpleMenu::roleNames() const
+QHash<int, QByteArray> SimpleMenuListModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
@@ -58,37 +64,6 @@ QHash<int, QByteArray> SimpleMenu::roleNames() const
     return roles;
 }
 
-void SimpleMenu::loadApplications()
+void SimpleMenuListModel::loadApplications()
 {
-    m_apps.clear();
-
-    const KService::List services = KService::allServices();
-
-    for (const KService::Ptr &service : services)
-    {
-        if (service->noDisplay() || !service->isApplication())
-        {
-            qDebug() << "Skipping" << service->name();
-            continue;
-        }
-
-        AppItem item;
-        item.name = service->name();
-        item.exec = service->exec();
-        item.icon = service->icon();
-        item.description = service->comment();
-
-        if (item.name.isEmpty() || item.exec.isEmpty())
-        {
-            continue;
-        }
-
-        m_apps.append(item);
-        m_filteredApps.append(item); //TODO: implement filter
-    }
-
-    std::sort(m_apps.begin(), m_apps.end(), [](const AppItem &a, const AppItem &b)
-    {
-      return QString::localeAwareCompare(a.name, b.name) < 0;
-    });
 }

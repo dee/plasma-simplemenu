@@ -1,11 +1,9 @@
 #pragma once
 
-#include <QAbstractListModel>
 #include <QObject>
-#include <QModelIndex>
-#include <QByteArray>
 #include <QString>
 #include <QQmlEngine>
+#include <QAbstractListModel>
 
 struct AppItem {
     QString name;
@@ -14,12 +12,9 @@ struct AppItem {
     QString description;
 };
 
-class SimpleMenu : public QAbstractListModel
+class SimpleMenuListModel : QAbstractListModel
 {
     Q_OBJECT
-    QML_ELEMENT
-    QML_SINGLETON
-
 public:
     enum Roles {
         NameRole = Qt::UserRole + 1,
@@ -28,7 +23,7 @@ public:
         DescriptionRole
     };
 
-    static HelloWorld *create(QQmlEngine *, QJSEngine *);
+    SimpleMenuListModel(QObject* parent);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -39,6 +34,25 @@ public:
 private:
     QList<AppItem> m_filteredApps, m_apps;
 
-    explicit SimpleMenu(QObject* parent = nullptr);
 };
+
+class SimpleMenu : public QObject
+{
+    Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
+    Q_PROPERTY(QString message READ message CONSTANT)
+
+public:
+    static SimpleMenu *create(QQmlEngine *, QJSEngine *);
+
+    QString message() const;
+
+private:
+    SimpleMenuListModel m_model;
+
+    SimpleMenu();
+};
+
 
