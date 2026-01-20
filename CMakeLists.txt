@@ -16,11 +16,13 @@ include(FeatureSummary)
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Quick
     Core
+    Widgets
 )
 
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     I18n
     Config
+    Service
 )
 
 find_package(Plasma REQUIRED)

@@ -1,4 +1,4 @@
-plasma_add_applet(simplemenu
+plasma_add_applet(org.kde.plasma.simplemenu
     QML_SOURCES
         qml/main.qml
     CPP_SOURCES
@@ -8,7 +8,7 @@ plasma_add_applet(simplemenu
     GENERATE_APPLET_CLASS
 )
 
-target_link_libraries(simplemenu PRIVATE
+target_link_libraries(org.kde.plasma.simplemenu PRIVATE
     Qt6::Gui
     Plasma::Plasma
     KF6::I18n
