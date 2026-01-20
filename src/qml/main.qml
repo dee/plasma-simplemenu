@@ -10,6 +10,19 @@ import org.kde.kirigami as Kirigami
 PlasmoidItem {
     id: root
 
+    fullRepresentation: ColumnLayout {
+        anchors.fill: parent
+        PC.Label {
+            Layout.alignment: Qt.AlignCenter
+            text: SimpleMenu.message
+        }
+    }
+}
+
+/*
+PlasmoidItem {
+    id: root
+
     Layout.preferredHeight: 500
     Layout.preferredWidth: 400
     Layout.minimumHeight: 400
@@ -31,7 +44,7 @@ PlasmoidItem {
 
                     ListView {
                         id: appList
-                        model: SimpleMenu
+                        model: SimpleMenu.Model
 
                         delegate: ItemDelegate {
                             width: appList.width
@@ -74,7 +87,6 @@ PlasmoidItem {
                     }
                 }
             }
-
         }
     }
 
@@ -88,3 +100,4 @@ PlasmoidItem {
         }
     }
 }
+*/
