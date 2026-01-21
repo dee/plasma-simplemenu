@@ -7,19 +7,7 @@ import org.kde.plasma.core as Core
 import org.kde.plasma.components as PC
 import org.kde.kirigami as Kirigami
 
-PlasmoidItem {
-    id: root
 
-    fullRepresentation: ColumnLayout {
-        anchors.fill: parent
-        PC.Label {
-            Layout.alignment: Qt.AlignCenter
-            text: SimpleMenu.message
-        }
-    }
-}
-
-/*
 PlasmoidItem {
     id: root
 
@@ -100,4 +88,4 @@ PlasmoidItem {
         }
     }
 }
-*/
+
