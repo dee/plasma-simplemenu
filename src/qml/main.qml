@@ -16,15 +16,28 @@ PlasmoidItem {
     Layout.minimumHeight: 400
     Layout.minimumWidth: 300
 
-    fullRepresentation: Item {
+    fullRepresentation: Rectangle {
+        color: Kirigami.Theme.backgroundColor
+        border.color: Kirigami.Theme.textColor
+        border.width: 1
 
-        Rectangle {
-            color: Kirigami.Theme.backgroundColor
-
-            ColumnLayout {
+        ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: 8
                 spacing: 8
+
+                PC.TextField {
+                    id: searchField
+                    Layout.fillWidth: true
+                    placeholderText: "Search..."
+
+                    onTextChanged: {
+                        // SimpleMenu.setFilter(text)
+                        console.debug("New filter:", text);
+                    }
+
+                    Component.onCompleted: forceActiveFocus()
+                }
 
                 ScrollView {
                     Layout.fillWidth: true
@@ -75,7 +88,6 @@ PlasmoidItem {
                     }
                 }
             }
-        }
     }
 
     // took it from kickoff from official sources
@@ -84,7 +96,10 @@ PlasmoidItem {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: root.expanded = !root.expanded
+            onClicked: {
+                console.debug("Expanding")
+                root.expanded = !root.expanded
+            }
         }
     }
 }
