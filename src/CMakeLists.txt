@@ -12,4 +12,5 @@ target_link_libraries(org.kde.plasma.simplemenu PRIVATE
     Qt6::Gui
     Plasma::Plasma
     KF6::I18n
+    KF6::Service
 )
