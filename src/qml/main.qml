@@ -16,6 +16,9 @@ PlasmoidItem {
     Layout.minimumHeight: 400
     Layout.minimumWidth: 300
 
+    width: 400
+    height: 500
+
     fullRepresentation: Rectangle {
         color: Kirigami.Theme.backgroundColor
         border.color: Kirigami.Theme.textColor
@@ -32,8 +35,8 @@ PlasmoidItem {
                     placeholderText: "Search..."
 
                     onTextChanged: {
-                        // SimpleMenu.setFilter(text)
                         console.debug("New filter:", text);
+                        SimpleMenu.filter = text;
                     }
 
                     Component.onCompleted: forceActiveFocus()
@@ -45,7 +48,7 @@ PlasmoidItem {
 
                     ListView {
                         id: appList
-                        model: SimpleMenu.Model
+                        model: SimpleMenu.model
 
                         delegate: ItemDelegate {
                             width: appList.width
@@ -90,15 +93,20 @@ PlasmoidItem {
             }
     }
 
-    // took it from kickoff from official sources
-    compactRepresentation: Kirigami.Icon {
-        source: "applications-all"
+    compactRepresentation: Item {
+        Layout.preferredWidth: Kirigami.Units.iconSizes.medium
+        Layout.preferredHeight: Kirigami.Units.iconSizes.medium
 
-        MouseArea {
+        Kirigami.Icon {
             anchors.fill: parent
-            onClicked: {
-                console.debug("Expanding")
-                root.expanded = !root.expanded
+            source: "applications-all"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    console.debug("Expanding")
+                    root.expanded = !root.expanded
+                }
             }
         }
     }
