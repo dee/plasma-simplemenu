@@ -17,10 +17,13 @@ SimpleMenu *SimpleMenu::create(QQmlEngine *, QJSEngine *)
 
 SimpleMenu::SimpleMenu()
     : QObject(nullptr)
-    ,m_model(nullptr)
+    , m_model()
 {}
 
-SimpleMenuListModel::SimpleMenuListModel(QObject *parent)
+SimpleMenuListModel::SimpleMenuListModel()
+    : QAbstractListModel(nullptr),
+    m_filteredApps(),
+    m_apps()
 {
     loadApplications();
 }
@@ -95,4 +98,37 @@ void SimpleMenuListModel::loadApplications()
               {
                   return QString::localeAwareCompare(a.name, b.name) < 0;
               });
+}
+
+QString SimpleMenuListModel::filter() const
+{
+    return m_filter;
+}
+
+void SimpleMenuListModel::setFilter(const QString &value)
+{
+    m_filter = value;
+}
+
+void SimpleMenuListModel::updateFilteredList()
+{
+    if (m_filter.isEmpty())
+    {
+        m_filteredApps = m_apps;
+    }
+    else
+    {
+        m_filteredApps.clear();
+        const QString filter = m_filter.toLower();
+
+        for (const AppItem &app : m_apps)
+        {
+            //TODO: case-insensitivity
+            if (app.name.toLower().contains(filter) ||
+                app.description.toLower().contains(filter))
+            {
+                m_filteredApps.append(app);
+            }
+        }
+    }
 }

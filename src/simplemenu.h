@@ -12,7 +12,7 @@ struct AppItem {
     QString description;
 };
 
-class SimpleMenuListModel : QAbstractListModel
+class SimpleMenuListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
@@ -23,7 +23,7 @@ public:
         DescriptionRole
     };
 
-    SimpleMenuListModel(QObject* parent);
+    SimpleMenuListModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -31,9 +31,13 @@ public:
 
     void loadApplications();
 
+    QString filter() const;
+    void setFilter(const QString &);
 private:
+    QString m_filter;
     QList<AppItem> m_filteredApps, m_apps;
 
+    void updateFilteredList();
 };
 
 class SimpleMenu : public QObject
@@ -43,11 +47,17 @@ class SimpleMenu : public QObject
     QML_SINGLETON
 
     Q_PROPERTY(QString message READ message CONSTANT)
+    Q_PROPERTY(QString filter READ filter WRITE setFilter)
+    Q_PROPERTY(SimpleMenuListModel* model READ model)
 
 public:
     static SimpleMenu *create(QQmlEngine *, QJSEngine *);
 
     QString message() const;
+    QString filter() const { return m_model.filter(); }
+    SimpleMenuListModel* model() { return &m_model; }
+
+    void setFilter(const QString& value) { m_model.setFilter(value); }
 
 private:
     SimpleMenuListModel m_model;
