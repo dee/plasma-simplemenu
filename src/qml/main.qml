@@ -91,6 +91,16 @@ PlasmoidItem {
                                 }
                             }
                         }
+
+                        onClicked: {
+                            SimpleMenu.model.launchApp(index)
+                            root.expanded = false
+                        }
+
+                        background: Rectangle {
+                            color: parent.hovered ? Kirigami.Theme.hoverColor : "transparent"
+                            radius: 4
+                        }
                     }
                 }
             }

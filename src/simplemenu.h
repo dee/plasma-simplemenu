@@ -33,6 +33,9 @@ public:
 
     QString filter() const;
     void setFilter(const QString &);
+
+    Q_INVOKABLE void launchApp(int index);
+
 private:
     QString m_filter;
     QList<AppItem> m_filteredApps, m_apps;

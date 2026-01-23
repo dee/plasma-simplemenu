@@ -2,6 +2,7 @@
 
 #include <QStringLiteral>
 #include <KService>
+#include <QProcess>
 
 SimpleMenu *SimpleMenu::create(QQmlEngine *, QJSEngine *)
 {
@@ -132,4 +133,21 @@ void SimpleMenuListModel::updateFilteredList()
     }
 
     endResetModel();
+}
+
+void SimpleMenuListModel::launchApp(int index)
+{
+    if (index < 0 || index >= m_filteredApps.size())
+    {
+        return;
+    }
+
+    const AppItem &app = m_filteredApps.at(index);
+
+    QStringList args = app.exec.split(u' ', Qt::SkipEmptyParts);
+    if (!args.isEmpty())
+    {
+        QString program = args.takeFirst();
+        QProcess::startDetached(program, args);
+    }
 }
