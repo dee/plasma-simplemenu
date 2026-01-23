@@ -25,72 +25,76 @@ PlasmoidItem {
         border.width: 1
 
         ColumnLayout {
-                anchors.fill: parent
-                anchors.margins: 8
-                spacing: 8
+            anchors.fill: parent
+            anchors.margins: 8
+            spacing: 8
 
-                PC.TextField {
-                    id: searchField
-                    Layout.fillWidth: true
-                    placeholderText: "Search..."
+            PC.TextField {
+                id: searchField
+                Layout.fillWidth: true
+                placeholderText: "Search..."
 
-                    onTextChanged: {
-                        console.debug("New filter:", text);
-                        SimpleMenu.filter = text;
-                    }
-
-                    Component.onCompleted: forceActiveFocus()
+                onTextChanged: {
+                    console.debug("New filter:", text);
+                    SimpleMenu.filter = text;
                 }
 
-                ScrollView {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+                Component.onCompleted: {
+                    Qt.callLater(function() {
+                        searchField.forceActiveFocus()
+                    })
+                }
+            }
 
-                    ListView {
-                        id: appList
-                        model: SimpleMenu.model
+            ScrollView {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
-                        delegate: ItemDelegate {
-                            width: appList.width
-                            height: 40
+                ListView {
+                    id: appList
+                    model: SimpleMenu.model
 
-                            RowLayout {
-                                anchors.fill: parent
-                                anchors.margins: 4
-                                spacing: 8
+                    delegate: ItemDelegate {
+                        width: appList.width
+                        height: 40
 
-                                Kirigami.Icon {
-                                    Layout.preferredWidth: 32
-                                    Layout.preferredHeight: 32
-                                    source: model.icon
-                                    fallback: "application-x-executable"
+                        RowLayout {
+                            anchors.fill: parent
+                            anchors.margins: 4
+                            spacing: 8
+
+                            Kirigami.Icon {
+                                Layout.preferredWidth: 32
+                                Layout.preferredHeight: 32
+                                source: model.icon
+                                fallback: "application-x-executable"
+                            }
+
+                            ColumnLayout {
+                                Layout.fillWidth: true
+                                spacing: 0
+
+                                PC.Label {
+                                    Layout.fillWidth: true
+                                    text: model.name
+                                    font.weight: Font.Medium
+                                    elide: Text.ElideRight
                                 }
 
-                                ColumnLayout {
+                                PC.Label {
                                     Layout.fillWidth: true
-                                    spacing: 0
-
-                                    PC.Label {
-                                        Layout.fillWidth: true
-                                        text: model.name
-                                        font.weight: Font.Medium
-                                        elide: Text.ElideRight
-                                    }
-
-                                    PC.Label {
-                                        Layout.fillWidth: true
-                                        text: model.description
-                                        font.pointSize: Kirigami.Theme.smallFont.pointSize
-                                        color: Kirigami.Theme.disabledTextColor
-                                        elide: Text.ElideRight
-                                        visible: text !== ""
-                                    }
+                                    text: model.description
+                                    font.pointSize: Kirigami.Theme.smallFont.pointSize
+                                    color: Kirigami.Theme.disabledTextColor
+                                    elide: Text.ElideRight
+                                    visible: text !== ""
                                 }
                             }
                         }
                     }
                 }
             }
+        }
     }
 
     compactRepresentation: Item {
