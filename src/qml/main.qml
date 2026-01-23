@@ -37,12 +37,27 @@ PlasmoidItem {
                 onTextChanged: {
                     console.debug("New filter:", text);
                     SimpleMenu.filter = text;
+                    focusTimer.restart()
                 }
 
                 Component.onCompleted: {
                     Qt.callLater(function() {
+                        // console.debug("Setting focus")
                         searchField.forceActiveFocus()
                     })
+                }
+
+                Timer {
+                    id: focusTimer
+                    interval: 500
+                    onTriggered: {
+                        // console.debug("Triggering")
+                        if (appList.count > 0) {
+                            appList.currentIndex = 0
+                            console.debug("Focusing current item:", appList.currentItem)
+                            appList.currentItem.forceActiveFocus()
+                        }
+                    }
                 }
             }
 
@@ -57,6 +72,9 @@ PlasmoidItem {
                     delegate: ItemDelegate {
                         width: appList.width
                         height: 40
+                        activeFocusOnTab: true
+                        focus: true
+                        //highlighted: ListView.IsCurrentItem   // does not work
 
                         RowLayout {
                             anchors.fill: parent
@@ -102,9 +120,35 @@ PlasmoidItem {
                             radius: 4
                         }
                     }
+
+                    Keys.onReturnPressed: {
+                        if (currentIndex >= 0) {
+                            SimpleMenu.model.launchApp(currentIndex)
+                            root.expanded = false
+                        }
+                    }
+
+                    Keys.onEnterPressed: {
+                        if (currentIndex >= 0) {
+                            SimpleMenu.model.launchApp(currentIndex)
+                            root.expanded = false
+                        }
+                    }
                 }
             }
         }
+
+        // Connections {
+        //     target: SimpleMenu.model
+        //     function onModelReset() {
+        //         if (appList.count > 0) {
+        //             appList.currentIndex = 0
+        //             Qt.callLater(function() {
+        //                 appList.currentItem.forceActiveFocus()
+        //             })
+        //         }
+        //     }
+        // }
     }
 
     compactRepresentation: Item {
@@ -118,7 +162,7 @@ PlasmoidItem {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    console.debug("Expanding")
+                    // console.debug("Expanding")
                     root.expanded = !root.expanded
                 }
             }

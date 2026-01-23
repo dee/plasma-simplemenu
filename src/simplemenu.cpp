@@ -72,10 +72,10 @@ void SimpleMenuListModel::loadApplications()
 
     for (const KService::Ptr &service : services)
     {
-        qDebug() << "Found:" << service->name();
+        // qDebug() << "Found:" << service->name();
         if (service->noDisplay() || !service->isApplication() || service->exec().isEmpty() || service->name().isEmpty())
         {
-            qDebug() << "Skipping" << service->name();
+            // qDebug() << "Skipping" << service->name();
             continue;
         }
 
@@ -86,13 +86,9 @@ void SimpleMenuListModel::loadApplications()
         item.description = service->comment();
         m_apps.append(item);
 
-        qDebug() << "Added item:" << item.name << "(" << item.exec << ")";
+        // qDebug() << "Added item:" << item.name << "(" << item.exec << ")";
     }
 
-    // std::sort(m_apps.begin(), m_apps.end(), [](const AppItem &a, const AppItem &b)
-    //           {
-    //               return QString::localeAwareCompare(a.name, b.name) < 0;
-    //           });
     updateFilteredList();
 }
 
