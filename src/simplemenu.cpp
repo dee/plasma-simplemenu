@@ -3,11 +3,6 @@
 #include <QStringLiteral>
 #include <KService>
 
-QString SimpleMenu::message() const
-{
-    return QStringLiteral("Hello!");
-}
-
 SimpleMenu *SimpleMenu::create(QQmlEngine *, QJSEngine *)
 {
     static SimpleMenu instance;
@@ -89,15 +84,15 @@ void SimpleMenuListModel::loadApplications()
         item.icon = service->icon();
         item.description = service->comment();
         m_apps.append(item);
-        m_filteredApps.append(item); //TODO: implement filter
 
         qDebug() << "Added item:" << item.name << "(" << item.exec << ")";
     }
 
-    std::sort(m_apps.begin(), m_apps.end(), [](const AppItem &a, const AppItem &b)
-              {
-                  return QString::localeAwareCompare(a.name, b.name) < 0;
-              });
+    // std::sort(m_apps.begin(), m_apps.end(), [](const AppItem &a, const AppItem &b)
+    //           {
+    //               return QString::localeAwareCompare(a.name, b.name) < 0;
+    //           });
+    updateFilteredList();
 }
 
 QString SimpleMenuListModel::filter() const
@@ -108,10 +103,13 @@ QString SimpleMenuListModel::filter() const
 void SimpleMenuListModel::setFilter(const QString &value)
 {
     m_filter = value;
+    updateFilteredList();
 }
 
 void SimpleMenuListModel::updateFilteredList()
 {
+    beginResetModel();
+
     if (m_filter.isEmpty())
     {
         m_filteredApps = m_apps;
@@ -127,8 +125,11 @@ void SimpleMenuListModel::updateFilteredList()
             if (app.name.toLower().contains(filter) ||
                 app.description.toLower().contains(filter))
             {
+                qDebug() << "Matching filter, adding:" << app.name;
                 m_filteredApps.append(app);
             }
         }
     }
+
+    endResetModel();
 }

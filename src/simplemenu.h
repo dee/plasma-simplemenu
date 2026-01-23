@@ -46,14 +46,12 @@ class SimpleMenu : public QObject
     QML_ELEMENT
     QML_SINGLETON
 
-    Q_PROPERTY(QString message READ message CONSTANT)
     Q_PROPERTY(QString filter READ filter WRITE setFilter)
     Q_PROPERTY(SimpleMenuListModel* model READ model)
 
 public:
     static SimpleMenu *create(QQmlEngine *, QJSEngine *);
 
-    QString message() const;
     QString filter() const { return m_model.filter(); }
     SimpleMenuListModel* model() { return &m_model; }
 
