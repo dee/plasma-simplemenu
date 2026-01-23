@@ -74,7 +74,6 @@ PlasmoidItem {
                         height: 40
                         activeFocusOnTab: true
                         focus: true
-                        //highlighted: ListView.IsCurrentItem   // does not work
 
                         RowLayout {
                             anchors.fill: parent
@@ -116,7 +115,15 @@ PlasmoidItem {
                         }
 
                         background: Rectangle {
-                            color: parent.hovered ? Kirigami.Theme.hoverColor : "transparent"
+                            color: {
+                                if (appList.currentIndex === index) {
+                                    return Kirigami.Theme.highlightColor
+                                } else if (hovered) {
+                                    return Kirigami.Theme.hoverColor
+                                } else {
+                                    return "transparent"
+                                }
+                            }
                             radius: 4
                         }
                     }
