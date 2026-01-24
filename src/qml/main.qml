@@ -90,11 +90,14 @@ PlasmoidItem {
             ScrollView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                clip: true
 
                 ListView {
                     id: appList
                     model: SimpleMenu.model
+                    clip: true
+
+                    highlightMoveDuration: 0
+                    highlightResizeDuration: 0
 
                     delegate: ItemDelegate {
                         width: appList.width
