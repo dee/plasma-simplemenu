@@ -21,8 +21,8 @@ PlasmoidItem {
 
     fullRepresentation: Rectangle {
         color: Kirigami.Theme.backgroundColor
-        border.color: Kirigami.Theme.textColor
-        border.width: 1
+        // border.color: Kirigami.Theme.textColor
+        border.width: 0
 
         ColumnLayout {
             anchors.fill: parent
@@ -49,14 +49,40 @@ PlasmoidItem {
 
                 Timer {
                     id: focusTimer
-                    interval: 500
+                    interval: 750
                     onTriggered: {
                         // console.debug("Triggering")
-                        if (appList.count > 0) {
+                        if (appList.count > 0 && searchField.text !== "") {
                             appList.currentIndex = 0
                             console.debug("Focusing current item:", appList.currentItem)
-                            appList.currentItem.forceActiveFocus()
+                            //appList.currentItem.forceActiveFocus()
                         }
+                    }
+                }
+
+                Keys.onReturnPressed: {
+                    if (appList.currentIndex >= 0) {
+                        SimpleMenu.model.launchApp(appList.currentIndex)
+                        root.expanded = false
+                    }
+                }
+
+                Keys.onEnterPressed: {
+                    if (appList.currentIndex >= 0) {
+                        SimpleMenu.model.launchApp(appList.currentIndex)
+                        root.expanded = false
+                    }
+                }
+
+                Keys.onUpPressed: {
+                    if (appList.currentIndex > 0) {
+                        appList.currentIndex--;
+                    }
+                }
+
+                Keys.onDownPressed: {
+                    if (appList.currentIndex < appList.count-1) {
+                        appList.currentIndex++;
                     }
                 }
             }
@@ -64,6 +90,7 @@ PlasmoidItem {
             ScrollView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                clip: true
 
                 ListView {
                     id: appList
@@ -71,9 +98,13 @@ PlasmoidItem {
 
                     delegate: ItemDelegate {
                         width: appList.width
-                        height: 40
+                        height: 44
                         activeFocusOnTab: true
                         focus: true
+                        leftPadding: 5
+                        rightPadding: 0
+                        topPadding: 0
+                        bottomPadding: 0
 
                         RowLayout {
                             anchors.fill: parent
@@ -127,35 +158,9 @@ PlasmoidItem {
                             radius: 4
                         }
                     }
-
-                    Keys.onReturnPressed: {
-                        if (currentIndex >= 0) {
-                            SimpleMenu.model.launchApp(currentIndex)
-                            root.expanded = false
-                        }
-                    }
-
-                    Keys.onEnterPressed: {
-                        if (currentIndex >= 0) {
-                            SimpleMenu.model.launchApp(currentIndex)
-                            root.expanded = false
-                        }
-                    }
                 }
             }
         }
-
-        // Connections {
-        //     target: SimpleMenu.model
-        //     function onModelReset() {
-        //         if (appList.count > 0) {
-        //             appList.currentIndex = 0
-        //             Qt.callLater(function() {
-        //                 appList.currentItem.forceActiveFocus()
-        //             })
-        //         }
-        //     }
-        // }
     }
 
     compactRepresentation: Item {
