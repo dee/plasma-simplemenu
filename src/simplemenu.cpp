@@ -128,6 +128,12 @@ void SimpleMenuListModel::updateFilteredList()
         }
     }
 
+    std::sort(m_filteredApps.begin(), m_filteredApps.end(),
+    [](const AppItem &a, const AppItem &b)
+    {
+        return QString::localeAwareCompare(a.name, b.name) < 0;
+    });
+
     endResetModel();
 }
 
