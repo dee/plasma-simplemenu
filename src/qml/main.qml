@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import org.kde.plasma.plasmoid
 import org.kde.plasma.core as Core
 import org.kde.plasma.components as PC
+import org.kde.plasma.extras as PE
 import org.kde.kirigami as Kirigami
 
 
@@ -29,10 +30,21 @@ PlasmoidItem {
             anchors.margins: 8
             spacing: 8
 
-            PC.TextField {
+            PE.ActionTextField {
                 id: searchField
                 Layout.fillWidth: true
                 placeholderText: "Search..."
+
+                rightActions: [
+                    Action {
+                        icon.name: "edit-clear"
+                        enabled: searchField.text.length > 0
+                        onTriggered: {
+                            searchField.text = ""
+                            searchField.forceActiveFocus()
+                        }
+                    }
+                ]
 
                 onTextChanged: {
                     console.debug("New filter:", text);
@@ -172,7 +184,7 @@ PlasmoidItem {
 
         Kirigami.Icon {
             anchors.fill: parent
-            source: "applications-all"
+            source: "view-grid-symbolic"
 
             MouseArea {
                 anchors.fill: parent
