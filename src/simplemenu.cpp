@@ -3,6 +3,9 @@
 #include <QStringLiteral>
 #include <KService>
 #include <QProcess>
+#include <QDBusInterface>
+#include <QDBusConnection>
+#include <QDBusInterface>
 
 SimpleMenu *SimpleMenu::create(QQmlEngine *, QJSEngine *)
 {
@@ -116,7 +119,7 @@ void SimpleMenuListModel::updateFilteredList()
         m_filteredApps.clear();
         const QString filter = m_filter.toLower();
 
-        for (const AppItem &app : m_apps)
+        for (const AppItem &app : std::as_const(m_apps))
         {
             //TODO: case-insensitivity
             if (app.name.toLower().contains(filter) ||
@@ -151,5 +154,29 @@ void SimpleMenuListModel::launchApp(int index)
     {
         QString program = args.takeFirst();
         QProcess::startDetached(program, args);
+    }
+}
+
+void SimpleMenuListModel::logout()
+{
+    QDBusInterface interface(QLatin1String("org.kde.ksmserver"),
+                             QLatin1String("/KSMServer"),
+                             QLatin1String("org.kde.KSMServerInterface"),
+                             QDBusConnection::sessionBus());
+    if (interface.isValid())
+    {
+        interface.call(QLatin1String("logout"), 0, 0, 0);
+    }
+}
+
+void SimpleMenuListModel::poweroff()
+{
+    QDBusInterface interface(QLatin1String("org.freedesktop.login1"),
+                             QLatin1String("/org/freedesktop/login1"),
+                             QLatin1String("org.freedesktop.login1.Manager"),
+                             QDBusConnection::systemBus());
+    if (interface.isValid())
+    {
+        interface.call(QLatin1String("PowerOff"), 0, 0, 0);
     }
 }

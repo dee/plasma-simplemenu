@@ -13,11 +13,11 @@ PlasmoidItem {
     id: root
 
     Layout.preferredHeight: 500
-    Layout.preferredWidth: 400
+    Layout.preferredWidth: 300
     Layout.minimumHeight: 400
     Layout.minimumWidth: 300
 
-    width: 400
+    width: 300
     height: 500
 
     fullRepresentation: Rectangle {
@@ -27,8 +27,8 @@ PlasmoidItem {
 
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 8
-            spacing: 8
+            anchors.margins: 4
+            spacing: 4
 
             PE.ActionTextField {
                 id: searchField
@@ -172,6 +172,33 @@ PlasmoidItem {
                             }
                             radius: 4
                         }
+                    }
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40
+
+                PC.Button {
+                    Layout.fillWidth: true
+                    text: "Logout"
+                    icon.name: "system-log-out"
+
+                    onClicked: {
+                        SimpleMenu.logout()
+                        root.expanded = false
+                    }
+                }
+
+                PC.Button {
+                    Layout.fillWidth: true
+                    text: "Power Off"
+                    icon.name: "system-shutdown"
+
+                    onClicked: {
+                        SimpleMenu.poweroff()
+                        root.expanded = false
                     }
                 }
             }

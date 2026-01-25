@@ -35,6 +35,8 @@ public:
     void setFilter(const QString &);
 
     Q_INVOKABLE void launchApp(int index);
+    Q_INVOKABLE void logout();
+    Q_INVOKABLE void poweroff();
 
 private:
     QString m_filter;
