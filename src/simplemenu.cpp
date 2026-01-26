@@ -6,6 +6,7 @@
 #include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusInterface>
+#include <QDBusReply>
 
 SimpleMenu *SimpleMenu::create(QQmlEngine *, QJSEngine *)
 {
@@ -159,9 +160,9 @@ void SimpleMenuListModel::launchApp(int index)
 
 void SimpleMenu::logout()
 {
-    QDBusInterface interface(QLatin1String("org.kde.ksmserver"),
-                             QLatin1String("/KSMServer"),
-                             QLatin1String("org.kde.KSMServerInterface"),
+    QDBusInterface interface(QStringLiteral("org.kde.Shutdown"),
+                             QStringLiteral("/Shutdown"),
+                             QStringLiteral("org.kde.Shutdown"),
                              QDBusConnection::sessionBus());
     if (!interface.isValid())
     {
@@ -169,20 +170,26 @@ void SimpleMenu::logout()
         return;
     }
     qDebug() << "Calling logout";
-    interface.call(QLatin1String("logout"), 0, 0, 0);
+    QDBusReply<void> reply = interface.call(QStringLiteral("logout"));
+    if (!reply.isValid()) {
+        qDebug() << "DBus call failed:" << reply.error().message();
+    }
 }
 
 void SimpleMenu::poweroff()
 {
-    QDBusInterface interface(QLatin1String("org.freedesktop.login1"),
-                             QLatin1String("/org/freedesktop/login1"),
-                             QLatin1String("org.freedesktop.login1.Manager"),
-                             QDBusConnection::systemBus());
+    QDBusInterface interface(QStringLiteral("org.kde.Shutdown"),
+                             QStringLiteral("/Shutdown"),
+                             QStringLiteral("org.kde.Shutdown"),
+                             QDBusConnection::sessionBus());
     if (!interface.isValid())
     {
         qWarning() << "Interface is not valid!";
         return;
     }
-    qDebug() << "Calling poweroff";
-    interface.call(QLatin1String("PowerOff"), 0, 0, 0);
+    qDebug() << "Calling logoutAndShutdown";
+    QDBusReply<void> reply = interface.call(QStringLiteral("logoutAndShutdown"));
+    if (!reply.isValid()) {
+        qDebug() << "DBus call failed:" << reply.error().message();
+    }
 }
