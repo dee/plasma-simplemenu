@@ -35,8 +35,6 @@ public:
     void setFilter(const QString &);
 
     Q_INVOKABLE void launchApp(int index);
-    Q_INVOKABLE void logout();
-    Q_INVOKABLE void poweroff();
 
 private:
     QString m_filter;
@@ -61,6 +59,9 @@ public:
     SimpleMenuListModel* model() { return &m_model; }
 
     void setFilter(const QString& value) { m_model.setFilter(value); }
+
+    Q_INVOKABLE void logout();
+    Q_INVOKABLE void poweroff();
 
 private:
     SimpleMenuListModel m_model;

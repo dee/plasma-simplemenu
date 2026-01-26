@@ -157,26 +157,32 @@ void SimpleMenuListModel::launchApp(int index)
     }
 }
 
-void SimpleMenuListModel::logout()
+void SimpleMenu::logout()
 {
     QDBusInterface interface(QLatin1String("org.kde.ksmserver"),
                              QLatin1String("/KSMServer"),
                              QLatin1String("org.kde.KSMServerInterface"),
                              QDBusConnection::sessionBus());
-    if (interface.isValid())
+    if (!interface.isValid())
     {
-        interface.call(QLatin1String("logout"), 0, 0, 0);
+        qWarning() << "Interface is not valid!";
+        return;
     }
+    qDebug() << "Calling logout";
+    interface.call(QLatin1String("logout"), 0, 0, 0);
 }
 
-void SimpleMenuListModel::poweroff()
+void SimpleMenu::poweroff()
 {
     QDBusInterface interface(QLatin1String("org.freedesktop.login1"),
                              QLatin1String("/org/freedesktop/login1"),
                              QLatin1String("org.freedesktop.login1.Manager"),
                              QDBusConnection::systemBus());
-    if (interface.isValid())
+    if (!interface.isValid())
     {
-        interface.call(QLatin1String("PowerOff"), 0, 0, 0);
+        qWarning() << "Interface is not valid!";
+        return;
     }
+    qDebug() << "Calling poweroff";
+    interface.call(QLatin1String("PowerOff"), 0, 0, 0);
 }
