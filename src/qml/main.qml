@@ -12,18 +12,19 @@ import org.kde.kirigami as Kirigami
 PlasmoidItem {
     id: root
 
-    Layout.preferredHeight: 500
-    Layout.preferredWidth: 300
-    Layout.minimumHeight: 400
-    Layout.minimumWidth: 300
-
     width: 300
     height: 500
 
+    Layout.minimumWidth: 300
+    Layout.minimumHeight: 500
+
+    Layout.maximumWidth: 300
+
     fullRepresentation: Rectangle {
         color: Kirigami.Theme.backgroundColor
-        // border.color: Kirigami.Theme.textColor
         border.width: 0
+        width: 300
+        height: 500
 
         ColumnLayout {
             anchors.fill: parent
@@ -138,19 +139,15 @@ PlasmoidItem {
                                 spacing: 0
 
                                 PC.Label {
+                                    id: nameLabel
                                     Layout.fillWidth: true
                                     text: model.name
-                                    font.weight: Font.Medium
+                                    font.weight: Font.Normal
                                     elide: Text.ElideRight
                                 }
 
-                                PC.Label {
-                                    Layout.fillWidth: true
+                                PC.ToolTip {
                                     text: model.description
-                                    font.pointSize: Kirigami.Theme.smallFont.pointSize
-                                    color: Kirigami.Theme.disabledTextColor
-                                    elide: Text.ElideRight
-                                    visible: text !== ""
                                 }
                             }
                         }
