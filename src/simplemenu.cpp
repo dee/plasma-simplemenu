@@ -193,3 +193,9 @@ void SimpleMenu::poweroff()
         qDebug() << "DBus call failed:" << reply.error().message();
     }
 }
+
+void SimpleMenu::repopulate()
+{
+    qDebug() << "Reloading application list";
+    m_model.loadApplications();
+}

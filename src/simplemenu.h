@@ -62,6 +62,7 @@ public:
 
     Q_INVOKABLE void logout();
     Q_INVOKABLE void poweroff();
+    Q_INVOKABLE void repopulate();
 
 private:
     SimpleMenuListModel m_model;

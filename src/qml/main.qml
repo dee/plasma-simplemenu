@@ -215,6 +215,7 @@ PlasmoidItem {
                 onClicked: {
                     // console.debug("Expanding")
                     root.expanded = !root.expanded
+                    SimpleMenu.repopulate()
                 }
             }
         }
