@@ -128,7 +128,7 @@ void SimpleMenuListModel::updateFilteredList()
             if (app.name.toLower().contains(filter) ||
                 app.description.toLower().contains(filter))
             {
-                qDebug() << "Matching filter, adding:" << app.name;
+                // qDebug() << "Matching filter, adding:" << app.name;
                 m_filteredApps.append(app);
             }
         }
