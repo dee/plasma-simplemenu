@@ -7,6 +7,8 @@
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QProcessEnvironment>
+#include <QDir>
 
 SimpleMenu *SimpleMenu::create(QQmlEngine *, QJSEngine *)
 {
@@ -154,7 +156,17 @@ void SimpleMenuListModel::launchApp(int index)
     if (!args.isEmpty())
     {
         QString program = args.takeFirst();
-        QProcess::startDetached(program, args);
+        qDebug() << "Launching" << program << "with args:";
+        for(const auto &arg : std::as_const(args))
+        {
+            qDebug() << arg;
+        }
+        QProcess p;
+        QProcessEnvironment env{QProcessEnvironment::systemEnvironment()};
+        env.insert(QStringLiteral("XDG_RUNTIME_DIR"), QDir::tempPath());
+        env.insert(QStringLiteral("DISPLAY"),
+                   QString::fromUtf8(qgetenv("DISPLAY")));
+        p.startDetached(program, args);
     }
 }
 
@@ -171,7 +183,8 @@ void SimpleMenu::logout()
     }
     qDebug() << "Calling logout";
     QDBusReply<void> reply = interface.call(QStringLiteral("logout"));
-    if (!reply.isValid()) {
+    if (!reply.isValid())
+    {
         qDebug() << "DBus call failed:" << reply.error().message();
     }
 }
@@ -189,7 +202,8 @@ void SimpleMenu::poweroff()
     }
     qDebug() << "Calling logoutAndShutdown";
     QDBusReply<void> reply = interface.call(QStringLiteral("logoutAndShutdown"));
-    if (!reply.isValid()) {
+    if (!reply.isValid())
+    {
         qDebug() << "DBus call failed:" << reply.error().message();
     }
 }
