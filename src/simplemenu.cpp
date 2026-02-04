@@ -163,11 +163,8 @@ void SimpleMenuListModel::launchApp(int index)
         }
         QProcess p;
         QProcessEnvironment env{QProcessEnvironment::systemEnvironment()};
-        env.insert(QStringLiteral("XDG_RUNTIME_DIR"), QDir::tempPath());
-        env.insert(QStringLiteral("DISPLAY"),
-                   QString::fromUtf8(qgetenv("DISPLAY")));
         p.setProcessEnvironment(env);
-        p.startDetached(program, args);
+        p.startDetached(QString::fromUtf8("sh"), QStringList() << QString::fromUtf8("-c") << program << args);
     }
 }
 
