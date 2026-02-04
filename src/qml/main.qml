@@ -12,9 +12,15 @@ import org.kde.kirigami as Kirigami
 PlasmoidItem {
     id: root
 
+    onExpandedChanged: {
+        if (expanded) {
+            console.debug("Opening menu")
+            searchField.selectAll()
+            SimpleMenu.repopulate()
+        }
+    }
+
     fullRepresentation: PE.Representation {
-        // color: Kirigami.Theme.backgroundColor
-        // border.width: 0
         width: 300
         height: 500
 
@@ -209,9 +215,7 @@ PlasmoidItem {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    // console.debug("Expanding")
                     root.expanded = !root.expanded
-                    SimpleMenu.repopulate()
                 }
             }
         }
