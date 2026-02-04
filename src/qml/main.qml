@@ -12,19 +12,15 @@ import org.kde.kirigami as Kirigami
 PlasmoidItem {
     id: root
 
-    width: 300
-    height: 500
-
-    Layout.minimumWidth: 300
-    Layout.minimumHeight: 500
-
-    Layout.maximumWidth: 300
-
-    fullRepresentation: Rectangle {
-        color: Kirigami.Theme.backgroundColor
-        border.width: 0
+    fullRepresentation: PE.Representation {
+        // color: Kirigami.Theme.backgroundColor
+        // border.width: 0
         width: 300
         height: 500
+
+        Layout.minimumWidth: 300
+        Layout.minimumHeight: 500
+        Layout.maximumWidth: 500
 
         ColumnLayout {
             anchors.fill: parent
@@ -208,7 +204,7 @@ PlasmoidItem {
 
         Kirigami.Icon {
             anchors.fill: parent
-            source: "view-grid-symbolic"
+            source: "start-here-symbolic"
 
             MouseArea {
                 anchors.fill: parent
