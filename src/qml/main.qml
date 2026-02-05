@@ -12,14 +12,6 @@ import org.kde.kirigami as Kirigami
 PlasmoidItem {
     id: root
 
-    onExpandedChanged: {
-        if (expanded) {
-            console.debug("Opening menu")
-            searchField.selectAll()
-            SimpleMenu.repopulate()
-        }
-    }
-
     fullRepresentation: PE.Representation {
         width: 300
         height: 500
@@ -50,7 +42,7 @@ PlasmoidItem {
                 ]
 
                 onTextChanged: {
-                    console.debug("New filter:", text);
+                    // console.debug("New filter:", text);
                     SimpleMenu.filter = text;
                     focusTimer.restart()
                 }
@@ -98,6 +90,16 @@ PlasmoidItem {
                 Keys.onDownPressed: {
                     if (appList.currentIndex < appList.count-1) {
                         appList.currentIndex++;
+                    }
+                }
+
+                Connections {
+                    target: root
+                    function onExpandedChanged() {
+                        if (root.expanded) {
+                            searchField.selectAll()
+                            searchField.forceActiveFocus()
+                        }
                     }
                 }
             }
@@ -201,6 +203,13 @@ PlasmoidItem {
                     }
                 }
             }
+        }
+    }
+
+    onExpandedChanged: {
+        if (root.expanded) {
+            console.debug("Opening menu")
+            SimpleMenu.repopulate()
         }
     }
 
